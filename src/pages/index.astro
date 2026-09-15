@@ -29,7 +29,7 @@ function coverUrl(path: string) {
   <Header />
   <main class="main">
     <div class="container">
-      <p class="eyebrow">Новости ИИ</p>
+      <p class="eyebrow">Сигнал из будущего ИИ</p>
       <section class="featured">
         <a class="featured-cover" href={`${base}article/${featured.id}/`}>
           <img src={coverUrl(featured.data.cover)} alt="" width="720" height="405" />
@@ -43,7 +43,7 @@ function coverUrl(path: string) {
           </div>
           <h1><a href={`${base}article/${featured.id}/`}>{featured.data.title}</a></h1>
           <p class="desc">{featured.data.description}</p>
-          <a href={`${base}article/${featured.id}/`} style="font-size:0.8125rem;color:var(--accent);letter-spacing:0.04em;">Читать →</a>
+          <a class="read-link" href={`${base}article/${featured.id}/`}>Читать</a>
         </div>
       </section>
 

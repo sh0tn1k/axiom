@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" fill="none">
-  <rect width="1200" height="675" fill="#0a0a0a"/>
-  <rect x="0" y="0" width="1200" height="1" fill="#1a1a1a"/>
-  <rect x="0" y="674" width="1200" height="1" fill="#1a1a1a"/>
-  <line x1="80" y1="337" x2="520" y2="337" stroke="#1f1f1f" stroke-width="1"/>
-  <rect x="80" y="200" width="2" height="275" fill="#2dd4bf" opacity="0.7"/>
-  <circle cx="900" cy="300" r="120" stroke="#1a1a1a" stroke-width="1" fill="none"/>
-  <circle cx="960" cy="360" r="80" stroke="#2dd4bf" stroke-width="1" fill="none" opacity="0.35"/>
-  <text x="100" y="420" font-family="system-ui,sans-serif" font-size="28" fill="#555" letter-spacing="6">AXIOM</text>
+  <rect width="1200" height="675" fill="#000"/>
+  <polygon points="600,120 980,540 220,540" stroke="#1e1e1e" stroke-width="1" fill="none"/>
+  <polygon points="600,220 820,500 380,500" stroke="#2a2a2a" stroke-width="1" fill="none"/>
+  <circle cx="600" cy="380" r="3" fill="#9eb6c8" opacity="0.55"/>
+  <circle cx="160" cy="160" r="1.2" fill="#d2e1f0" opacity="0.5"/>
+  <circle cx="1040" cy="200" r="1" fill="#c5d6e4" opacity="0.45"/>
+  <circle cx="180" cy="580" r="1" fill="#e0e8f0" opacity="0.35"/>
+  <text x="80" y="80" font-family="system-ui,sans-serif" font-size="22" fill="#444" letter-spacing="10">AXIOM</text>
 </svg>

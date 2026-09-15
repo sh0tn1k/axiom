@@ -1,10 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" fill="none">
-  <rect width="1200" height="675" fill="#0a0a0a"/>
-  <rect x="0" y="0" width="1200" height="1" fill="#1a1a1a"/>
-  <rect x="0" y="674" width="1200" height="1" fill="#1a1a1a"/>
-  <line x1="80" y1="337" x2="520" y2="337" stroke="#1f1f1f" stroke-width="1"/>
-  <rect x="80" y="200" width="2" height="275" fill="#2dd4bf" opacity="0.7"/>
-  <circle cx="900" cy="300" r="120" stroke="#1a1a1a" stroke-width="1" fill="none"/>
-  <circle cx="960" cy="360" r="80" stroke="#2dd4bf" stroke-width="1" fill="none" opacity="0.35"/>
-  <text x="100" y="420" font-family="system-ui,sans-serif" font-size="28" fill="#555" letter-spacing="6">AXIOM</text>
+  <rect width="1200" height="675" fill="#000"/>
+  <circle cx="0" cy="0" r="380" fill="url(#g5)" opacity="0.7"/>
+  <circle cx="1100" cy="650" r="220" fill="url(#g5b)" opacity="0.4"/>
+  <line x1="60" y1="337" x2="1140" y2="337" stroke="#1a1a1a" stroke-width="1"/>
+  <circle cx="300" cy="220" r="1.2" fill="#d2e1f0" opacity="0.5"/>
+  <circle cx="700" cy="180" r="1.5" fill="#e8eef5" opacity="0.55"/>
+  <circle cx="900" cy="480" r="1" fill="#b8c8d8" opacity="0.4"/>
+  <circle cx="480" cy="520" r="1" fill="#c5d6e4" opacity="0.35"/>
+  <text x="80" y="400" font-family="system-ui,sans-serif" font-size="22" fill="#444" letter-spacing="10">AXIOM</text>
+  <defs>
+    <radialGradient id="g5" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#121820"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient>
+    <radialGradient id="g5b" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#101418"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient>
+  </defs>
 </svg>

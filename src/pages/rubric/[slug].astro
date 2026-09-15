@@ -32,12 +32,12 @@ function asset(path: string) {
         <p>{rubric.description}</p>
       </div>
 
-      <nav class="meta-row" style="margin-bottom:1.5rem;gap:1rem;">
+      <nav class="meta-row rubric-nav" style="margin-bottom:1.75rem;gap:1.25rem;">
         {Object.values(rubrics).map((r) => (
           <a
             href={`${base}rubric/${r.slug}/`}
             class="rubric-tag"
-            style={r.slug === slug ? 'border-bottom:1px solid var(--accent);' : 'color:var(--text-muted);'}
+            style={r.slug === slug ? 'color:#fff;border-bottom:1px solid var(--accent);padding-bottom:0.15rem;' : 'color:var(--text-muted);'}
           >{r.title}</a>
         ))}
       </nav>
