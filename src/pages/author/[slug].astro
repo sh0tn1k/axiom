@@ -22,48 +22,79 @@ const articles = (await getCollection('articles'))
 function asset(path: string) {
   return path.startsWith('http') ? path : `${base}${path.replace(/^\//, '')}`;
 }
+
+const countLabel =
+  articles.length === 1
+    ? '1 материал'
+    : articles.length < 5
+      ? `${articles.length} материала`
+      : `${articles.length} материалов`;
 ---
 <BaseLayout title={`${author.data.name} — автор AXIOM`} description={author.data.bio}>
   <Header />
-  <main class="main">
+  <main class="main author-page">
     <div class="container">
-      <header class="author-header">
-        <img src={asset(author.data.avatar)} alt={author.data.name} width="96" height="96" />
-        <div>
+      <header class="author-hero reveal">
+        <div class="author-hero-glow" aria-hidden="true"></div>
+        <div class="author-avatar-wrap">
+          <div class="avatar-halo" aria-hidden="true"></div>
+          <div class="avatar-ring">
+            <img src={asset(author.data.avatar)} alt={author.data.name} width="120" height="120" />
+          </div>
+        </div>
+        <div class="author-hero-body">
+          <p class="author-eyebrow">Автор AXIOM</p>
           <h1>{author.data.name}</h1>
           <p class="role">{author.data.role}</p>
-          <p class="bio">{author.data.bio}</p>
-          {author.data.socials && (
-            <div class="socials">
-              {author.data.socials.telegram && <a href={author.data.socials.telegram} target="_blank" rel="noopener noreferrer">Telegram</a>}
-              {author.data.socials.twitter && <a href={author.data.socials.twitter} target="_blank" rel="noopener noreferrer">X</a>}
-              {author.data.socials.github && <a href={author.data.socials.github} target="_blank" rel="noopener noreferrer">GitHub</a>}
-              {author.data.socials.email && <a href={`mailto:${author.data.socials.email}`}>Email</a>}
-            </div>
-          )}
+          <div class="author-bio-panel">
+            <p class="bio">{author.data.bio}</p>
+          </div>
+          <div class="author-meta-row">
+            <span class="chip chip-count">{countLabel}</span>
+            {author.data.socials && (
+              <div class="socials social-chips">
+                {author.data.socials.telegram && (
+                  <a class="chip chip-social" href={author.data.socials.telegram} target="_blank" rel="noopener noreferrer">Telegram</a>
+                )}
+                {author.data.socials.twitter && (
+                  <a class="chip chip-social" href={author.data.socials.twitter} target="_blank" rel="noopener noreferrer">X</a>
+                )}
+                {author.data.socials.github && (
+                  <a class="chip chip-social" href={author.data.socials.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+                )}
+                {author.data.socials.email && (
+                  <a class="chip chip-social" href={`mailto:${author.data.socials.email}`}>Email</a>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </header>
 
-      <h2 class="section-title">Материалы автора</h2>
-      <div class="author-feed">
-        {articles.map((a) => (
-          <article class="item">
-            <a class="thumb" href={`${base}article/${a.id}/`} tabindex="-1" aria-hidden="true">
-              <img src={asset(a.data.cover)} alt="" loading="lazy" />
-            </a>
-            <div>
-              <div class="meta-row">
-                <a class="rubric-tag" href={`${base}rubric/${a.data.rubric}/`}>{rubrics[a.data.rubric].title}</a>
-                <time datetime={a.data.pubDate.toISOString()}>
-                  {a.data.pubDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}
-                </time>
+      <section class="author-feed-section reveal">
+        <h2 class="section-title section-title-glass">Материалы автора</h2>
+        <div class="author-feed">
+          {articles.map((a) => (
+            <article class="item feed-card">
+              <a class="thumb" href={`${base}article/${a.id}/`} tabindex="-1" aria-hidden="true">
+                <img src={asset(a.data.cover)} alt="" loading="lazy" />
+                <div class="thumb-sheen" aria-hidden="true"></div>
+              </a>
+              <div class="feed-body">
+                <div class="meta-row meta-chips">
+                  <a class="chip chip-rubric" href={`${base}rubric/${a.data.rubric}/`}>{rubrics[a.data.rubric].title}</a>
+                  <time class="chip chip-date" datetime={a.data.pubDate.toISOString()}>
+                    {a.data.pubDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  </time>
+                </div>
+                <h3><a href={`${base}article/${a.id}/`}>{a.data.title}</a></h3>
+                <p class="feed-desc">{a.data.description}</p>
+                <a class="feed-read" href={`${base}article/${a.id}/`}>Читать</a>
               </div>
-              <h3 style="margin-top:0.5rem;"><a href={`${base}article/${a.id}/`}>{a.data.title}</a></h3>
-              <p style="color:var(--text-muted);font-size:0.9rem;">{a.data.description}</p>
-            </div>
-          </article>
-        ))}
-      </div>
+            </article>
+          ))}
+        </div>
+      </section>
     </div>
   </main>
   <Footer />

@@ -40,22 +40,30 @@ function asset(path: string) {
 const pageUrl = new URL(`${base}article/${article.id}/`, Astro.site).href;
 const shareText = encodeURIComponent(article.data.title);
 const shareUrl = encodeURIComponent(pageUrl);
+const dateStr = article.data.pubDate.toLocaleDateString('ru-RU', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
 ---
 <BaseLayout title={article.data.title} description={article.data.description} ogImage={asset(article.data.cover)}>
   <Header />
-  <main class="main">
-    <div class="container">
-      <article class="article-hero">
-        <div class="meta-row">
-          <a class="rubric-tag" href={`${base}rubric/${rubric.slug}/`}>{rubric.title}</a>
-          <time datetime={article.data.pubDate.toISOString()}>
-            {article.data.pubDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}
-          </time>
+  <main class="main article-page">
+    <div class="container article-shell">
+      <article class="article-hero reveal">
+        <div class="article-hero-glass">
+          <div class="meta-row meta-chips">
+            <a class="chip chip-rubric" href={`${base}rubric/${rubric.slug}/`}>{rubric.title}</a>
+            <time class="chip chip-date" datetime={article.data.pubDate.toISOString()}>{dateStr}</time>
+          </div>
+          <h1>{article.data.title}</h1>
+          <p class="article-lead">{article.data.description}</p>
         </div>
-        <h1>{article.data.title}</h1>
-        <p style="color:var(--text-muted);max-width:640px;">{article.data.description}</p>
-        <div class="cover">
+
+        <div class="cover cover-cinematic">
           <img src={asset(article.data.cover)} alt="" width="1080" height="608" />
+          <div class="cover-vignette" aria-hidden="true"></div>
+          <div class="cover-fade" aria-hidden="true"></div>
         </div>
       </article>
 
@@ -68,29 +76,36 @@ const shareUrl = encodeURIComponent(pageUrl);
         />
       )}
 
-      <div class="prose">
+      <div class="prose reveal-delay">
         <Content />
       </div>
 
-      <div class="share">
-        <span>Поделиться</span>
-        <a href={`https://t.me/share/url?url=${shareUrl}&text=${shareText}`} target="_blank" rel="noopener noreferrer">Telegram</a>
-        <a href={`https://twitter.com/intent/tweet?url=${shareUrl}&text=${shareText}`} target="_blank" rel="noopener noreferrer">X</a>
-        <a href={`https://news.ycombinator.com/submitlink?u=${shareUrl}&t=${shareText}`} target="_blank" rel="noopener noreferrer">HN</a>
+      <div class="share share-bar reveal">
+        <span class="share-label">Поделиться</span>
+        <div class="share-chips">
+          <a href={`https://t.me/share/url?url=${shareUrl}&text=${shareText}`} target="_blank" rel="noopener noreferrer">Telegram</a>
+          <a href={`https://twitter.com/intent/tweet?url=${shareUrl}&text=${shareText}`} target="_blank" rel="noopener noreferrer">X</a>
+          <a href={`https://news.ycombinator.com/submitlink?u=${shareUrl}&t=${shareText}`} target="_blank" rel="noopener noreferrer">HN</a>
+        </div>
       </div>
 
-      <h2 class="section-title">Похожие материалы</h2>
-      <div class="similar-grid">
-        {similar.map((a) => (
-          <a class="similar-card" href={`${base}article/${a.id}/`}>
-            <div class="thumb"><img src={asset(a.data.cover)} alt="" loading="lazy" /></div>
-            <div class="body">
-              <h3>{a.data.title}</h3>
-              <div class="date">{a.data.pubDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
-            </div>
-          </a>
-        ))}
-      </div>
+      <section class="similar-panel reveal">
+        <h2 class="section-title section-title-glass">Похожие материалы</h2>
+        <div class="similar-grid">
+          {similar.map((a) => (
+            <a class="similar-card" href={`${base}article/${a.id}/`}>
+              <div class="thumb">
+                <img src={asset(a.data.cover)} alt="" loading="lazy" />
+                <div class="thumb-sheen" aria-hidden="true"></div>
+              </div>
+              <div class="body">
+                <h3>{a.data.title}</h3>
+                <div class="date">{a.data.pubDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
     </div>
   </main>
   <Footer />

@@ -8,10 +8,15 @@ interface Props {
 
 const { name, role, avatar, href } = Astro.props;
 ---
-<a class="byline" href={href}>
-  <img src={avatar} alt="" width="48" height="48" />
-  <div>
+<a class="byline byline-card" href={href}>
+  <div class="byline-avatar">
+    <span class="byline-halo" aria-hidden="true"></span>
+    <img src={avatar} alt="" width="52" height="52" />
+  </div>
+  <div class="byline-text">
+    <div class="byline-label">Автор</div>
     <div class="name">{name}</div>
     <div class="role">{role}</div>
   </div>
+  <span class="byline-arrow" aria-hidden="true">→</span>
 </a>
