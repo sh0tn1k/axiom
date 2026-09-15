@@ -1,0 +1,70 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { rubrics } from '../../data/rubrics';
+
+export async function getStaticPaths() {
+  const authors = await getCollection('authors');
+  return authors.map((author) => ({
+    params: { slug: author.id },
+    props: { author },
+  }));
+}
+
+const { author } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const articles = (await getCollection('articles'))
+  .filter((a) => a.data.author.id === author.id)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+function asset(path: string) {
+  return path.startsWith('http') ? path : `${base}${path.replace(/^\//, '')}`;
+}
+---
+<BaseLayout title={`${author.data.name} — автор AXIOM`} description={author.data.bio}>
+  <Header />
+  <main class="main">
+    <div class="container">
+      <header class="author-header">
+        <img src={asset(author.data.avatar)} alt={author.data.name} width="96" height="96" />
+        <div>
+          <h1>{author.data.name}</h1>
+          <p class="role">{author.data.role}</p>
+          <p class="bio">{author.data.bio}</p>
+          {author.data.socials && (
+            <div class="socials">
+              {author.data.socials.telegram && <a href={author.data.socials.telegram} target="_blank" rel="noopener noreferrer">Telegram</a>}
+              {author.data.socials.twitter && <a href={author.data.socials.twitter} target="_blank" rel="noopener noreferrer">X</a>}
+              {author.data.socials.github && <a href={author.data.socials.github} target="_blank" rel="noopener noreferrer">GitHub</a>}
+              {author.data.socials.email && <a href={`mailto:${author.data.socials.email}`}>Email</a>}
+            </div>
+          )}
+        </div>
+      </header>
+
+      <h2 class="section-title">Материалы автора</h2>
+      <div class="author-feed">
+        {articles.map((a) => (
+          <article class="item">
+            <a class="thumb" href={`${base}article/${a.id}/`} tabindex="-1" aria-hidden="true">
+              <img src={asset(a.data.cover)} alt="" loading="lazy" />
+            </a>
+            <div>
+              <div class="meta-row">
+                <a class="rubric-tag" href={`${base}rubric/${a.data.rubric}/`}>{rubrics[a.data.rubric].title}</a>
+                <time datetime={a.data.pubDate.toISOString()}>
+                  {a.data.pubDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}
+                </time>
+              </div>
+              <h3 style="margin-top:0.5rem;"><a href={`${base}article/${a.id}/`}>{a.data.title}</a></h3>
+              <p style="color:var(--text-muted);font-size:0.9rem;">{a.data.description}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>

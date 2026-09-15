@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL;
+---
+<BaseLayout title="О проекте — AXIOM" description="AXIOM — нишевый редакционный портал о технологиях искусственного интеллекта.">
+  <Header />
+  <main class="main">
+    <div class="container">
+      <div class="page-intro">
+        <p class="eyebrow">О проекте</p>
+        <h1>AXIOM</h1>
+        <p>Короткий редакционный взгляд на ИИ: без шумихи, с акцентом на то, что меняет практику — модели, инструменты, исследования и рынок.</p>
+      </div>
+
+      <div class="about-grid">
+        <div class="prose">
+          <p>AXIOM — не агрегатор всего подряд. Мы выбираем темы, которые имеют значение для инженеров, исследователей и продуктовых команд: качество моделей, стоимость инференса, паттерны внедрения, регулирование.</p>
+          <p>Формат — спокойный журнал: тёмный минималистичный интерфейс, короткие точные тексты, понятная навигация по рубрикам и авторам.</p>
+          <h2>Рубрики</h2>
+          <ul>
+            <li><a href={`${base}rubric/models/`}>Модели</a> — архитектуры, релизы, open-weight и frontier.</li>
+            <li><a href={`${base}rubric/tools/`}>Инструменты</a> — IDE, агенты, API, RAG.</li>
+            <li><a href={`${base}rubric/research/`}>Исследования</a> — papers, eval, эффективность обучения.</li>
+            <li><a href={`${base}rubric/business/`}>Бизнес</a> — рынок, экономика, регулирование.</li>
+          </ul>
+        </div>
+        <aside class="about-card">
+          <h3>Контакты</h3>
+          <ul class="contact-list">
+            <li>Редакция: <a href="mailto:hello@axiom.example">hello@axiom.example</a></li>
+            <li>Telegram: <a href="https://t.me/axiom_ai" target="_blank" rel="noopener noreferrer">@axiom_ai</a></li>
+            <li>Предложить тему: <a href="mailto:tips@axiom.example">tips@axiom.example</a></li>
+          </ul>
+          <p style="margin-top:1.25rem;font-size:0.8rem;color:var(--text-faint);">Это демонстрационный статический сайт. Админ-панели нет — контент в репозитории.</p>
+        </aside>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>

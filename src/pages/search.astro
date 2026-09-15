@@ -1,0 +1,79 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { rubrics } from '../data/rubrics';
+
+const base = import.meta.env.BASE_URL;
+const articles = (await getCollection('articles')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const index = articles.map((a) => ({
+  id: a.id,
+  title: a.data.title,
+  description: a.data.description,
+  rubric: rubrics[a.data.rubric].title,
+  date: a.data.pubDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', year: 'numeric' }),
+  href: `${base}article/${a.id}/`,
+}));
+---
+<BaseLayout title="Поиск — AXIOM" description="Поиск по материалам AXIOM.">
+  <Header />
+  <main class="main">
+    <div class="container">
+      <div class="page-intro">
+        <p class="eyebrow">Поиск</p>
+        <h1>Найти материал</h1>
+        <p>Клиентский поиск по заголовкам и описаниям. Без сервера — всё уже на странице.</p>
+      </div>
+      <label for="q" class="visually-hidden" style="position:absolute;left:-9999px;">Запрос</label>
+      <input class="search-box" id="q" type="search" placeholder="Модели, RAG, регулирование…" autocomplete="off" />
+      <p class="search-empty" id="status"></p>
+      <ul class="search-results" id="results"></ul>
+    </div>
+  </main>
+  <Footer />
+  <script define:vars={{ index }}>
+    const input = document.getElementById('q');
+    const results = document.getElementById('results');
+    const status = document.getElementById('status');
+
+    function render(items, query) {
+      results.innerHTML = '';
+      if (!query) {
+        status.textContent = `Всего материалов: ${index.length}. Начните вводить запрос.`;
+        items = index;
+      } else if (items.length === 0) {
+        status.textContent = 'Ничего не найдено.';
+        return;
+      } else {
+        status.textContent = `Найдено: ${items.length}`;
+      }
+      for (const item of items) {
+        const li = document.createElement('li');
+        li.innerHTML = `<a href="${item.href}"><strong>${item.title}</strong></a><div class="meta">${item.rubric} · ${item.date}</div><div style="color:var(--text-muted);font-size:0.875rem;margin-top:0.25rem;">${item.description}</div>`;
+        results.appendChild(li);
+      }
+    }
+
+    function search(q) {
+      const query = q.trim().toLowerCase();
+      if (!query) return render(index, '');
+      const filtered = index.filter((a) =>
+        (a.title + ' ' + a.description + ' ' + a.rubric).toLowerCase().includes(query)
+      );
+      render(filtered, query);
+    }
+
+    input?.addEventListener('input', (e) => search(e.target.value));
+    const params = new URLSearchParams(location.search);
+    if (params.get('q')) {
+      input.value = params.get('q');
+      search(input.value);
+    } else {
+      render(index, '');
+    }
+  </script>
+</BaseLayout>

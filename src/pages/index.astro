@@ -1,0 +1,83 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import { rubrics } from '../data/rubrics';
+
+const base = import.meta.env.BASE_URL;
+const articles = (await getCollection('articles')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const featured = articles.find((a) => a.data.featured) ?? articles[0];
+const latest = articles.filter((a) => a.id !== featured.id).slice(0, 6);
+
+const byRubric = Object.fromEntries(
+  Object.keys(rubrics).map((slug) => [
+    slug,
+    articles.filter((a) => a.data.rubric === slug).slice(0, 4),
+  ])
+);
+
+function coverUrl(path: string) {
+  return path.startsWith('http') ? path : `${base}${path.replace(/^\//, '')}`;
+}
+---
+<BaseLayout title="AXIOM — новости ИИ-технологий" description="Нишевый портал о моделях, инструментах, исследованиях и бизнесе искусственного интеллекта.">
+  <Header />
+  <main class="main">
+    <div class="container">
+      <p class="eyebrow">Новости ИИ</p>
+      <section class="featured">
+        <a class="featured-cover" href={`${base}article/${featured.id}/`}>
+          <img src={coverUrl(featured.data.cover)} alt="" width="720" height="405" />
+        </a>
+        <div class="featured-meta">
+          <div class="meta-row">
+            <a class="rubric-tag" href={`${base}rubric/${featured.data.rubric}/`}>{rubrics[featured.data.rubric].title}</a>
+            <time datetime={featured.data.pubDate.toISOString()}>
+              {featured.data.pubDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}
+            </time>
+          </div>
+          <h1><a href={`${base}article/${featured.id}/`}>{featured.data.title}</a></h1>
+          <p class="desc">{featured.data.description}</p>
+          <a href={`${base}article/${featured.id}/`} style="font-size:0.8125rem;color:var(--accent);letter-spacing:0.04em;">Читать →</a>
+        </div>
+      </section>
+
+      <h2 class="section-title">Последние материалы</h2>
+      <div class="article-grid">
+        {latest.map((a) => (
+          <ArticleCard
+            title={a.data.title}
+            description={a.data.description}
+            href={`${base}article/${a.id}/`}
+            cover={coverUrl(a.data.cover)}
+            date={a.data.pubDate}
+            rubricTitle={rubrics[a.data.rubric].title}
+          />
+        ))}
+      </div>
+
+      <h2 class="section-title">По рубрикам</h2>
+      <div class="rubric-sections">
+        {Object.values(rubrics).map((r) => (
+          <section class="rubric-block">
+            <h2><a href={`${base}rubric/${r.slug}/`}>{r.title}</a></h2>
+            <ul class="rubric-list">
+              {(byRubric[r.slug] ?? []).map((a) => (
+                <li>
+                  <a href={`${base}article/${a.id}/`}>{a.data.title}</a>
+                  <span class="date">{a.data.pubDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>

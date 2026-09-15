@@ -1,0 +1,26 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  href: string;
+  cover: string;
+  date: Date;
+  rubricTitle: string;
+}
+
+const { title, description, href, cover, date, rubricTitle } = Astro.props;
+const dateStr = date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', year: 'numeric' });
+---
+<article class="article-card">
+  <a class="article-card-cover" href={href} tabindex="-1" aria-hidden="true">
+    <img src={cover} alt="" loading="lazy" width="280" height="175" />
+  </a>
+  <div>
+    <div class="meta-row">
+      <span class="rubric-tag">{rubricTitle}</span>
+      <time datetime={date.toISOString()}>{dateStr}</time>
+    </div>
+    <h3><a href={href}>{title}</a></h3>
+    <p class="excerpt">{description}</p>
+  </div>
+</article>

@@ -1,0 +1,61 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { rubrics, type RubricSlug } from '../../data/rubrics';
+
+export function getStaticPaths() {
+  return Object.keys(rubrics).map((slug) => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+const rubric = rubrics[slug as RubricSlug];
+const base = import.meta.env.BASE_URL;
+
+const articles = (await getCollection('articles'))
+  .filter((a) => a.data.rubric === slug)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+function asset(path: string) {
+  return path.startsWith('http') ? path : `${base}${path.replace(/^\//, '')}`;
+}
+---
+<BaseLayout title={`${rubric.title} — AXIOM`} description={rubric.description}>
+  <Header />
+  <main class="main">
+    <div class="container">
+      <div class="page-intro">
+        <p class="eyebrow">Рубрика</p>
+        <h1>{rubric.title}</h1>
+        <p>{rubric.description}</p>
+      </div>
+
+      <nav class="meta-row" style="margin-bottom:1.5rem;gap:1rem;">
+        {Object.values(rubrics).map((r) => (
+          <a
+            href={`${base}rubric/${r.slug}/`}
+            class="rubric-tag"
+            style={r.slug === slug ? 'border-bottom:1px solid var(--accent);' : 'color:var(--text-muted);'}
+          >{r.title}</a>
+        ))}
+      </nav>
+
+      <div class="article-grid">
+        {articles.map((a) => (
+          <ArticleCard
+            title={a.data.title}
+            description={a.data.description}
+            href={`${base}article/${a.id}/`}
+            cover={asset(a.data.cover)}
+            date={a.data.pubDate}
+            rubricTitle={rubric.title}
+          />
+        ))}
+      </div>
+      {articles.length === 0 && <p class="search-empty">Пока нет материалов в этой рубрике.</p>}
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>

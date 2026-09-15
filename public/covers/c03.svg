@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" fill="none">
+  <rect width="1200" height="675" fill="#0a0a0a"/>
+  <rect x="0" y="0" width="1200" height="1" fill="#1a1a1a"/>
+  <rect x="0" y="674" width="1200" height="1" fill="#1a1a1a"/>
+  <line x1="80" y1="337" x2="520" y2="337" stroke="#1f1f1f" stroke-width="1"/>
+  <rect x="80" y="200" width="2" height="275" fill="#2dd4bf" opacity="0.7"/>
+  <circle cx="900" cy="300" r="120" stroke="#1a1a1a" stroke-width="1" fill="none"/>
+  <circle cx="960" cy="360" r="80" stroke="#2dd4bf" stroke-width="1" fill="none" opacity="0.35"/>
+  <text x="100" y="420" font-family="system-ui,sans-serif" font-size="28" fill="#555" letter-spacing="6">AXIOM</text>
+</svg>
